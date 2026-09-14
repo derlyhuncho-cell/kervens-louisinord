@@ -1,0 +1,7 @@
+:root { color-scheme: dark; font-family: Arial, sans-serif; background: #070709; color: #f4f1ec; }
+* { box-sizing: border-box; } body { margin: 0; background: radial-gradient(circle at top left, #4a0c20, #070709 48%); min-height: 100vh; }
+.gate, .album { width: min(100% - 40px, 760px); margin: 0 auto; padding: 100px 0; }.gate { text-align: center; max-width: 520px; }
+.eyebrow { color: #d23c56; font-size: 12px; font-weight: 700; letter-spacing: .2em; }.gate h1, .album h1 { font-size: clamp(48px, 12vw, 100px); line-height: .9; letter-spacing: -.07em; margin: 18px 0; }.gate p, .intro { color: #aaa4ac; line-height: 1.6; }
+form { display: flex; gap: 10px; margin-top: 32px; } input, button { border-radius: 8px; padding: 14px 16px; font: inherit; } input { flex: 1; border: 1px solid #5b5360; background: #171319; color: white; } button { border: 0; background: #b9203d; color: white; font-weight: 700; cursor: pointer; }.error { color: #ff8699; }.notice { color: #e6c888; }
+ol { list-style: none; padding: 0; margin: 42px 0; border-top: 1px solid #362d35; } li { padding: 20px 0; border-bottom: 1px solid #362d35; } li span { display: block; font-weight: 700; margin-bottom: 14px; } audio { display: block; width: 100%; }.upload label { display: grid; gap: 10px; }.upload input { width: 100%; cursor: pointer; }
+@media (max-width: 540px) { form { flex-direction: column; } }
