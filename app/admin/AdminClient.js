@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { upload } from '@vercel/blob/client';
+import { audioContentType } from '../../lib/audio-content-type';
 import AccessCodes from './AccessCodes';
 import { tracks } from '../../lib/tracks';
 
@@ -14,7 +15,7 @@ export default function AdminClient() {
   }
   async function send(id, file) {
     if (!file) return; setStatus(`Upload ${file.name} ap kòmanse...`);
-    try { await upload(`hegemonie/${id}.m4a`, file, { access: 'private', handleUploadUrl: '/api/upload', multipart: true }); setStatus(`${file.name} telechaje.`); }
+    try { await upload(`hegemonie/${id}.m4a`, file, { access: 'private', handleUploadUrl: '/api/upload', multipart: true, contentType: audioContentType(file) }); setStatus(`${file.name} telechaje.`); }
     catch { setStatus('Upload la pa mache. Eseye ankò.'); }
   }
   if (!authenticated) return <main className="gate"><p className="eyebrow">ADMIN</p><h1>HÉGÉMONIE</h1><p>Antre modpas admin lan pou telechaje mizik yo.</p><form onSubmit={signIn}><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Modpas admin" required /><button>Kontinye</button></form>{status && <p className="error">{status}</p>}</main>;
