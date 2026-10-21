@@ -9,7 +9,7 @@ test('individual access fails closed and revocation invalidates an existing cook
   const reads = [];
   const module = new vm.SourceTextModule(await readFile(new URL('../lib/auth.js', import.meta.url), 'utf8'), { context: vm.createContext({ Buffer, process, Date }) });
   await module.link(async name => {
-    const exports = name === 'node:crypto' ? { default: crypto } : { get: async (path, options) => { reads.push(options); return records.has(path) ? { statusCode: 200 } : null; } };
+    const exports = name === './album-storage' ? { albumStorageOptions: () => ({ token: 'test-private-store' }) } : name === 'node:crypto' ? { default: crypto } : { get: async (path, options) => { reads.push(options); return records.has(path) ? { statusCode: 200 } : null; } };
     return new vm.SyntheticModule(Object.keys(exports), function () { for (const [key, value] of Object.entries(exports)) this.setExport(key, value); }, { context: module.context });
   });
   await module.evaluate();
@@ -25,4 +25,13 @@ test('individual access fails closed and revocation invalidates an existing cook
   records.delete(codePath(code));
   assert.equal(await hasSession(request, 'album'), false);
   assert.ok(reads.every(options => options.access === 'private' && options.useCache === false));
+});
+
+test('album storage never falls back to a public default token', async () => {
+  const env = { BLOB_READ_WRITE_TOKEN: 'public-test-token' };
+  const module = new vm.SourceTextModule(await readFile(new URL('../lib/album-storage.js', import.meta.url), 'utf8'), { context: vm.createContext({ process: { env } }) });
+  await module.link(() => {}); await module.evaluate();
+  assert.throws(() => module.namespace.albumStorageOptions(), /not configured/);
+  env.CHO_READ_WRITE_TOKEN = 'private-test-token';
+  assert.equal(module.namespace.albumStorageOptions().token, 'private-test-token');
 });

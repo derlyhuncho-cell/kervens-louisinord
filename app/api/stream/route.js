@@ -1,3 +1,4 @@
+import { albumStorageOptions } from '../../../lib/album-storage';
 import { get } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 import { hasSession } from '../../../lib/auth';
@@ -8,7 +9,7 @@ export async function GET(request) {
   const id = new URL(request.url).searchParams.get('track');
   if (!trackMap.has(id)) return NextResponse.json({ error: 'Mizik sa a pa egziste.' }, { status: 404 });
   try {
-    const { stream, blob } = await get(`hegemonie/${id}.m4a`, { access: 'private' });
+    const { stream, blob } = await get(`hegemonie/${id}.m4a`, { ...albumStorageOptions(), access: 'private' });
     return new Response(stream, { headers: { 'Content-Type': blob.contentType || 'audio/mp4', 'Cache-Control': 'private, no-store' } });
   } catch {
     return NextResponse.json({ error: 'Mizik sa a poko telechaje.' }, { status: 404 });
