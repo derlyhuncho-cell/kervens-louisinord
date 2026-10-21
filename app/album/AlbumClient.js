@@ -11,5 +11,5 @@ export default function AlbumClient() {
     setUnlocked(true); setPassword('');
   }
   if (!unlocked) return <main className="gate"><p className="eyebrow">DERLY HUNCHO</p><h1>HÉGÉMONIE</h1><p>Antre kòd aksè Derly Huncho ba ou a.</p><form onSubmit={unlock}><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Kòd aksè" required /><button>Antre nan album nan</button></form>{error && <p className="error">{error}</p>}</main>;
-  return <main className="album"><p className="eyebrow">DERLY HUNCHO</p><h1>HÉGÉMONIE</h1><p className="intro">Album prive</p><ol>{tracks.map(([id, name], index) => <li key={id}><span>{String(index + 1).padStart(2, '0')} — {name}</span><audio controls preload="metadata" src={`/api/stream?track=${id}`} /></li>)}</ol></main>;
+  return <main className="album"><p className="eyebrow">DERLY HUNCHO</p><h1>HÉGÉMONIE</h1><p className="intro">Album prive</p><ol>{tracks.map(([id, name], index) => <li key={id}><span>{String(index + 1).padStart(2, '0')} — {name}</span><audio controls controlsList="nodownload" preload="metadata" src={`/api/stream?track=${id}`} /></li>)}</ol></main>;
 }
